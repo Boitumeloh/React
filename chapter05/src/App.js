@@ -11,8 +11,8 @@ class App extends Component {
         {/* <Products/> */}
         <JumboTronComponent>This is a simple hero unit, a simple jumbotron-style component for
         calling extra attention to featured content or information.</JumboTronComponent>
-      </div>
-    );
+      </div> 
+    ); 
   }
 }
 
