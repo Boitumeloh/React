@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { connect } from "react-redux";
+import Cart from "./Cart";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//keeps track of the application state
+function mapStateToProps(state) {
+  return {
+    totalCost: state.totalCost,
+    productCart: state.productCart,
+  };
 }
 
-export default App;
+//calls action methods (updates application state)
+function mapDispatchToProps(dispatch) {
+  return {
+    onAddProduct: (productName, productPrice) =>
+      dispatch({
+        type: "addProduct",
+        productData: {
+          productName: productName,
+          productPrice: productPrice,
+        },
+      }),
+    onDeleteProduct: (productData) =>
+      dispatch({
+        type: "deleteProduct",
+        productData: productData,
+      }),
+  };
+}
+
+//connects dispatch to the cart
+//allows us to add and delete products
+let connectedComponent = connect(mapStateToProps, mapDispatchToProps)(Cart);
+
+export default connectedComponent;
