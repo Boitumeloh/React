@@ -1,11 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>React Redux</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List of Persons</title>
+    <script src="https://unpkg.com/redux@4.0.1/dist/redux.js"></script>
+  </head>
+  <body>
+    <script>
+      //defining actions (add and remove)
+      function addPerson(id, name, age) {
+        return {
+          type: "ADD",
+          //payload (persons info)
+          //payload values are the declared as prams
+          personData: {
+            id: id,
+            name: name,
+            age: age,
+          },
+        };
+      }
+
+      function removePerson(id) {
+        return {
+          //removing person by id
+          type: "REMOVE",
+          //payload (persons id)
+          personId: id,
+        };
+      }
+
+      //Reducer function
+
+      const initialState = {
+        persons: [],
+      };
+
+      function reducer(state, action) {
+        //sets the persons array to default value( empty)
+        if (state === undefined) {
+          state = initialState;
+        }
+        //add new person to the array
+        if (action.type === "ADD") {
+          const newPerson = {
+            id: action.personData.id,
+            name: action.personData.name,
+            age: action.personData.age,
+          };
+          return {
+            //updates state
+            ...state,
+            persons: state.persons.concat(newPerson),
+          };
+        } else if (action.type === "REMOVE") {
+          return {
+            //updates state
+            ...state,
+            //find the person by id and remove them
+            persons: state.persons.filter(
+              (person) => person.id !== action.personId
+            ),
+          };
+        } else {
+          return state;
+        }
+      }
+
+      //connect action , reducer and store
+      let store = Redux.createStore(reducer);
+      store.subscribe(showState);
+
+      //adding 4 objects to persons array
+      store.dispatch(addPerson(1, "Greg", 5));
+      store.dispatch(addPerson(2, "Carol", 3));
+      store.dispatch(addPerson(3, "Gabriel", 6));
+      store.dispatch(addPerson(4, "Fred", 8));
+      //removing the last object in persons array
+      store.dispatch(removePerson(4));
+
+      function showState() {
+        console.log(store.getState());
+      }
+    </script>
+  </body>
 </html>
